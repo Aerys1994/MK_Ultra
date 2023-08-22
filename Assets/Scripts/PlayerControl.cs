@@ -12,6 +12,7 @@ public class PlayerContrl : MonoBehaviour
     public bool isGrounded;
     public float groundCheckRadius;
     public LayerMask whatIsGround;
+    public float test;
 
 
     // Start is called before the first frame update
