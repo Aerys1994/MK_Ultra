@@ -8,24 +8,42 @@ public class PlayerContrl : MonoBehaviour
     public float speed, jumpHeight;
     private float velX, velY;
     Rigidbody2D rb;
+
+    // The following are the variables for the jumping mechanism
     public Transform groundcheck;
-    public bool isGrounded;
+    private bool isGrounded;
     public float groundCheckRadius;
     public LayerMask whatIsGround;
-    public float test_3;
+    private int jumpsRemaining;
+    private bool canJump;
+    private float jumpCooldownTimer;
+    public float jumpCooldownDuration;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        canJump = true;
+        jumpCooldownTimer = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Checks if character is grounded to allow jump
         isGrounded = Physics2D.OverlapCircle(groundcheck.position, groundCheckRadius, whatIsGround);
-        Console.WriteLine(isGrounded);
+
+        // This mechanism avoids instant jumping once the character touches the ground after a jump
+        if (!canJump && isGrounded)
+        {
+            jumpCooldownTimer -= Time.deltaTime;
+            if (jumpCooldownTimer <= 0f)
+            {
+                canJump = true;
+            }
+        }
 
         FlipCharacter();
     }
@@ -35,8 +53,10 @@ public class PlayerContrl : MonoBehaviour
         Movement();
         Jump();
     }
+
     public void Movement()
     {
+        // Allows the character to move
         velX = Input.GetAxisRaw("Horizontal");
         velY = rb.velocity.y;
 
@@ -45,6 +65,7 @@ public class PlayerContrl : MonoBehaviour
 
     public void FlipCharacter()
     {
+        // Makes the character change directions with movement
         if (rb.velocity.x > 0)
         {
             transform.localScale = new Vector3(1, 1, 1);
@@ -57,9 +78,21 @@ public class PlayerContrl : MonoBehaviour
 
     public void Jump()
     {
-        if(Input.GetButton("Jump") && isGrounded)
+        // Jumping function
+        if (isGrounded)
+        {
+            jumpsRemaining = 2;
+        }
+
+        if (Input.GetButtonDown("Jump") && jumpsRemaining > 0 && canJump)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+            jumpsRemaining--;
+            if (jumpsRemaining == 0) // Establishes the timer for jump allowance
+            {
+                canJump = false;
+                jumpCooldownTimer = jumpCooldownDuration;
+            }
         }
     }
 }
