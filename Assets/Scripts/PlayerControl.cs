@@ -8,6 +8,7 @@ public class PlayerContrl : MonoBehaviour
     public float speed, jumpHeight;
     private float velX, velY;
     Rigidbody2D rb;
+    Animator anim;
 
     // The following are the variables for the jumping mechanism
     public Transform groundcheck;
@@ -25,6 +26,9 @@ public class PlayerContrl : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+
+
         canJump = true;
         jumpCooldownTimer = 0f;
     }
@@ -34,6 +38,15 @@ public class PlayerContrl : MonoBehaviour
     {
         // Checks if character is grounded to allow jump
         isGrounded = Physics2D.OverlapCircle(groundcheck.position, groundCheckRadius, whatIsGround);
+
+        //Transition to jump animation
+        if (isGrounded)
+        {
+            anim.SetBool("Jump", false);
+        } else
+        {
+            anim.SetBool("Jump", true);
+        }
 
         // This mechanism avoids instant jumping once the character touches the ground after a jump
         if (!canJump && isGrounded)
@@ -59,8 +72,15 @@ public class PlayerContrl : MonoBehaviour
         // Allows the character to move
         velX = Input.GetAxisRaw("Horizontal");
         velY = rb.velocity.y;
-
         rb.velocity = new Vector2(velX * speed, velY);
+
+        if (rb.velocity.x != 0)
+        {
+            anim.SetBool("Run", true);
+        } else
+        {
+            anim.SetBool("Run", false);
+        }
     }
 
     public void FlipCharacter()
