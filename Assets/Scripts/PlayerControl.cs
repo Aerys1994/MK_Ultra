@@ -59,6 +59,7 @@ public class PlayerContrl : MonoBehaviour
         }
 
         FlipCharacter();
+        Attack();
     }
 
     private void FixedUpdate()
@@ -93,6 +94,17 @@ public class PlayerContrl : MonoBehaviour
         else if (rb.velocity.x < 0)
         {
             transform.localScale = new Vector3(-1, 1, 1);
+        }
+    }
+
+    public void Attack()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+            anim.SetBool("Attack", true);
+        } else
+        {
+            anim.SetBool("Attack", false);
         }
     }
 
