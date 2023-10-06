@@ -6,12 +6,18 @@ using UnityEngine;
 public class Test_Mob : Mob
 {
     Test_Mob testMob;
+
+    
+
+
     public override void Start()
     {
         base.Start();
         testMob = GetComponent<Test_Mob>();
+        sprite = GetComponent<SpriteRenderer>();
+        material = GetComponent<Blink>();
         this.enemyName = "Test_mob";
-        this.life = 2;
+        //this.life;
         this.speed = 1;
 
     }
