@@ -9,6 +9,8 @@ public class Test_Mob : Mob
 
     
 
+    
+
 
     public override void Start()
     {
@@ -17,8 +19,8 @@ public class Test_Mob : Mob
         sprite = GetComponent<SpriteRenderer>();
         material = GetComponent<Blink>();
         this.enemyName = "Test_mob";
-        //this.life;
         this.speed = 1;
+        
 
     }
 

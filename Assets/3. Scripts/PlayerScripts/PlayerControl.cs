@@ -89,11 +89,11 @@ public class PlayerContrl : MonoBehaviour
         // Makes the character change directions with movement
         if (rb.velocity.x > 0)
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            transform.localScale = new Vector3((float)2.5, (float)2.5, 1);
         }
         else if (rb.velocity.x < 0)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = new Vector3((float)-2.5, (float)2.5, 1);
         }
     }
 
@@ -113,7 +113,7 @@ public class PlayerContrl : MonoBehaviour
         // Jumping function
         if (isGrounded)
         {
-            jumpsRemaining = 2;
+            jumpsRemaining = 1;
         }
 
         if (Input.GetButtonDown("Jump") && jumpsRemaining > 0 && canJump)
